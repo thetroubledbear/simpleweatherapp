@@ -1,18 +1,51 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <div class="search-city">
+          <form @submit.prevent="searchCity()"> 
+              <input type="text" placeholder="search" v-model="search">
+              <input type="submit" value="search">
+          </form>
+      </div>
+    <div class="weather-display" v-if= "typeof weatherdata.main != 'undefined'"> 
+        <h1> {{weatherdata.name}}, {{weatherdata.sys.country}} </h1>
+        <h2>{{Math.round(weatherdata.main.temp) }}°C</h2>
+        <h2>{{weatherdata.main.humidity}} %</h2>
+        <h3>{{weatherdata.weather[0].description}}</h3>
+    </div>
+
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import env from '@/env.js';
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+    data(){
+        return {
+            search: '',
+            weatherdata: {}
+        }
+    },
+    methods:{
+
+        searchCity () { 
+            if (this.search != ''){
+                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.search}&units=metric&APPID=${env.apikey}`)
+                .then(response => {
+                    return response.json();
+                    })
+                .then(this.setWeatherData);
+            }
+        },
+        setWeatherData (results) { 
+            this.weatherdata = results;
+        }
+    }
+
+
 }
 </script>
+
+<style>
+
+</style>
