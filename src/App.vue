@@ -4,12 +4,71 @@
     <h1>Weather <span>Vue App</span></h1>
     </router-link> 
   </div>
-  <main>
-    
-  <router-view/>
-  </main>
+
+ <div class="home">
+      <div class="search-city">
+          <form @submit.prevent="searchCity()"> 
+              <input type="text" placeholder="search" v-model="search">
+              <input type="submit" value="search">
+          </form>
+      </div>
+    <div class="weather-display" v-if= "typeof weatherdata.main != 'undefined'"> 
+        <h1> {{weatherdata.name}}, {{weatherdata.sys.country}} </h1>
+        <h2>{{Math.round(weatherdata.main.temp) }}°C</h2>
+        <h2>{{weatherdata.main.humidity}} %</h2>
+        <h3>{{weatherdata.weather[0].description}}</h3>
+    </div>
+  
+    <div class="weather-icon"  v-if= "typeof weatherdata.main != 'undefined'">
+        <img :src="require(`@/assets/icons/animated/${icon}`)" alt="peng ting" width="100" height="100" />
+        <h3>{{weatherdata.weather[0].icon}}</h3>
+    </div>
+  </div>
 </template>
 
-<style lang="scss">
+<script>
+import env from '@/env.js';
 
+export default {
+    data(){
+        return {
+            search: '',
+            weatherdata: {},
+            icon:''
+        }
+    },
+    methods:{
+
+        searchCity () { 
+            if (this.search != ''){
+                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.search}&units=metric&APPID=${env.apikey}`)
+                .then(response => {
+                    return response.json();
+                    })
+                .then(this.setWeatherData)
+            }
+        },
+        setWeatherData (results) { 
+            this.weatherdata = results;
+            this.determineIcon()
+        },
+        determineIcon () { 
+          if(this.weatherdata.weather[0].id >= 801 && this.weatherdata.weather[0].id <= 804){
+            return this.icon = "cloudy.svg"
+
+          } else if (this.weatherdata.weather[0].id == 800) {
+            return this.icon = "day.svg"
+          }
+        }
+        
+    }
+
+
+}
+</script>
+
+
+
+<style>
 </style>
+
