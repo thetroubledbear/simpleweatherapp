@@ -12,7 +12,9 @@
         <h2>{{weatherdata.main.humidity}} %</h2>
         <h3>{{weatherdata.weather[0].description}}</h3>
     </div>
-
+    <div class="weather-icon"  v-if= "typeof weatherdata.main != 'undefined' && weatherdata.main.temp > 15">
+        <img src="src/assets/icons/static/day.svg" alt="peng ting" width="500" height="600">
+    </div>
   </div>
 </template>
 
