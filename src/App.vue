@@ -1,8 +1,8 @@
 <template>
   <div id="nav">
-    <router-link to="/">
+
     <h1>Weather <span>Vue App</span></h1>
-    </router-link> 
+  
   </div>
 
  <div class="home">
@@ -20,8 +20,7 @@
     </div>
   
     <div class="weather-icon"  v-if= "typeof weatherdata.main != 'undefined'">
-        <img :src="require(`@/assets/icons/animated/${icon}.svg`)" alt="peng ting" width="100" height="100" />
-        <h3>{{weatherdata.weather[0].icon}}</h3>
+        <img :src="require(`@/assets/icons/animated/${icon}.svg`)" alt="peng ting" width="300" height="300" />
     </div>
   </div>
 </template>
@@ -50,11 +49,9 @@ export default {
         },
         setWeatherData (results) { 
             this.weatherdata = results;
-            this.determineIcon()
+            this.icon = this.weatherdata.weather[0].icon
         },
-        determineIcon () { 
-          this.icon = this.weatherdata.weather[0].icon
-        }
+       
         
     }
 
