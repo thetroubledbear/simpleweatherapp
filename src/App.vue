@@ -20,7 +20,7 @@
     </div>
   
     <div class="weather-icon"  v-if= "typeof weatherdata.main != 'undefined'">
-        <img :src="require(`@/assets/icons/animated/${icon}`)" alt="peng ting" width="100" height="100" />
+        <img :src="require(`@/assets/icons/animated/${icon}.svg`)" alt="peng ting" width="100" height="100" />
         <h3>{{weatherdata.weather[0].icon}}</h3>
     </div>
   </div>
@@ -53,12 +53,7 @@ export default {
             this.determineIcon()
         },
         determineIcon () { 
-          if(this.weatherdata.weather[0].id >= 801 && this.weatherdata.weather[0].id <= 804){
-            return this.icon = "cloudy.svg"
-
-          } else if (this.weatherdata.weather[0].id == 800) {
-            return this.icon = "day.svg"
-          }
+          this.icon = this.weatherdata.weather[0].icon
         }
         
     }
